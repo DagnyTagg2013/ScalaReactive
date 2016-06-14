@@ -1,0 +1,114 @@
+8) SWITCHING to Typesafe Activator Template for Akka-Http-Microservice!
+
+8.1) TUTORIAL:
+http://www.lightbend.com/activator/template/akka-http-microservice
+- build.sbt APPEARS to use akka-streams APIs!
+
+8.2) RUN:
+- from
+  akka-http-microservice>
+  type
+  activator run
+
+8.3) TOOLS:
+- install of Postman for Chrome
+*** from Mac/Spotlight can type in POSTMAN to bring it up in Chrome Browser!
+OR
+- from TERMINAL CMD window to POST JSON payload request, OVERRIDE from default GET to POST with -X!
+https://curl.haxx.se/docs/manpage.html
+
+NOTE:  can SAVE Collections of Requests and bring up
+- enter Headers/Content-Type of application/json
+- enter Body/Raw/Text/Json
+
+8.4) TEST:
+1) curl http://localhost:9000/ip/8.8.8.8
+2) curl -X POST -H 'Content-Type: application/json' http://localhost:9000/ip -d '{"ip1": "8.8.8.8", "ip2": "8.8.4.4"}'
+
+8.5) CASE classes for MESSAGE objects
+
+- input VALIDATION with  Scala's Predef library with its require
+- http://stackoverflow.com/questions/17408880/reduce-fold-or-scan-left-right
+
+8.6) (Protocol) TRAITs for Response JSON packaging and HTTP Codes from Futures or Options with:
+SprayJsonSupport
+
+- http://stackoverflow.com/questions/10162541/lazy-vals-and-implicit-parameters-in-scala
+
+8.7) SERVICE trait for EXTERNAL HttpREquest
+
+8.8) CONFIGURATION access to request URL, etc in Application.conf via ConfigFactory.load()
+
+8.9) AKKA STREAMS JACKPOT for handling Tweet Streams from Twitter:
+- http://doc.akka.io/docs/akka-stream-and-http-experimental/1.0-M2/scala/stream-quickstart.html
+- http://www.smartjava.org/content/building-rest-service-scala-akka-http-akka-streams-and-reactive-mongo
+- http://doc.akka.io/docs/akka-stream-and-http-experimental/2.0.2/AkkaStreamAndHTTPScala.pdf
+- http://doc.akka.io/docs/akka-stream-and-http-experimental/1.0-M2/scala/stream-flows-and-basics.html
+
+8.10) RECEIVE on WEBSOCKET:
+REACTIVE EXTENSIONS!!!
+- https://github.com/Reactive-Extensions/RxJS#getting-started
+- JS Promises pattern
+- https://www.youtube.com/watch?v=6AytbSdWBKg
+- https://github.com/Reactive-Extensions/RxJS/issues/112
+- https://github.com/badfortrains/wsExample
+- https://getsiphon.com/docs/build-a-chat-app/
+- http://www.lightbend.com/activator/template/akka-http-websocket-reactive-streams
+- http://doc.akka.io/docs/akka-stream-and-http-experimental/1.0/scala/http/routing-dsl/websocket-support.html
+
+8.11)
+
+QUESTIONs: AkkaStreams have bounded mailboxes that do not drop because SINK is able to notify SOURCE of FLOW via BACKPRESSURE to SLOW down
+           They are non-blocking, asynchronous via underlying Scala Futures
+
+           Q so AkkaStreams are BETTER to use than Actors?  BETTER than Play Svcs?
+           Or Actors for STATE-MACHINE NODE for long-running scenarios? vs Futures for one-off async event?
+           then Play for UI-integration?
+           ALSO, why use Finagle if you've got the stuff above?
+
+           Q STORING to Cassandra; or SHARED CACHE is now BAD as no ISOLATION?
+           Q TODO is this done under-covers; or via API method call that SINK makes for BACK-PRESSURE?
+
+           #2 How does HttpError/Timeout get communicated BACK -- just via Future.onComplete() and Try?
+
+           #3 How to allow PARTIAL-PROCESSING on FlowGraph pipeline; VS best-practice with vanilla Futures to process ONE STAGE AT A TIME
+             to retrieve COLLECTION of Try Success to process further vs COLLECTION of Try Failures to decide how to pass-through?
+
+           #1 materialized.get() returns one-time async Future result; and CONSUMES events in stream;
+              NEXT materialized.get() gets REMAINDER of stream in NEW independent Future result;
+              BUT does this result in non-blocking loop-client-polling?!
+
+           #4 flows serializeable BETWEEN Actors if NOT materialized?
+
+           #5 FLOWS ARE TWO-WAY!!
+              MaterializedMap on Flow allows Source AND Sink to save values to it.  BUT is the BUFFER size CONFIGURABLE?
+              How to Monitor/Tune?  How to hookup buffer to Cassandra-ish store?
+              SEE runWith() API method; OR
+
+           MAJOR QUERY:  How to hookup an Akka Sink to a Javascript Client WebSocket
+                         How to hookup an Akka Source to a Twitter Async Http Streaming Service
+
+           ****  BACKPRESSURE PROTOCOL is supported across BOTH of these types of Flow-Channels?
+                         Reactive Subscriber/Akka Sink specifies a DEMAND or number of elements it can buffer
+                         Reactive Publisher/Akka Source has built-in support to NOT emit events over that buffer
+
+                         BIG Q: how does Flow.get() of IMMUTABLE Future results work with Buffer to SIGNAL MORE demand;
+                         and does Sink buffer get filled with DEMAND number of elements EACH SUBSEQUENT time?
+                         SO, ...get() needs to get called in a loop; and client essentially POLLs for more events?
+
+
+                         PUSH mode:  FASTer Subscriber; SLOWer Publisher
+                         PULL mode:  FASTer Publisher; SLOWer Subscriber
+                                     Publisher can BUFFER, DROP, or KILL STREAM
+                                     Subscriber must PULL from Publisher
+                                     control production rate
+
+           **** TODO:  handleWebSocket API on Akka Website
+
+           **** TODO:  reactive tweets sample and h
+
+           Q what happens if an error happens in an intermediate stage of the flow-graph; BUT you want PARTIAL-PROCESSING TO PROCEED?
+             vs error-handling on intermediate stages?  Why ever do a flow-graph instead of stage-by-stage?
+
+
+

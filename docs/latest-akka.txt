@@ -1,0 +1,6 @@
+
+1) Akka Http Template
+
+2) Microservices - Reactive Communication Patterns
+
+3) Web Sockets - Anonymous Chat
