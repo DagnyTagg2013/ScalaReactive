@@ -15,3 +15,10 @@ https://github.com/victorcouste/zeppelin-spark-cassandra-demo
 
 https://academy.datastax.com/courses
 
+5) Cassandra-Spark intro
+
+http://www.slideshare.net/dtrapezoid/oscon-talk-becoming-friends-with-cassandra-and-spark
+
+https://www.youtube.com/watch?v=X-FKmKc9hkI
+
+ 
