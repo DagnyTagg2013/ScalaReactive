@@ -1,0 +1,33 @@
+
+Akka Http Microservice Lightbend Tutorial:
+http://www.lightbend.com/activator/template/akka-http-microservice
+
+1) from Terminal:
+cd /Users/daphneeng/TECH-Practice/ProjectsScala/akka-http-microservice
+Daphnes-Air:akka-http-microservice daphneeng$./bin/activator run 
+
+(for some reason activator ui isn't totally working for me)
+
+2) wait for console log:
+a://default/system/IO-TCP/selectors/$a/0] Successfully bound to /0:0:0:0:0:0:0:0:9000
+
+3) Mac Spotlight for Postman REST Test App
+
+- GET
+http://localhost:9000/ip/8.8.8.8
+
+- POST
+http://localhost:9000/ip/8.8.8.8
+HEADERs
+Content-Type: application/json
+CONTENT
+Text
+'{"ip1": "8.8.8.8", "ip2": "8.8.4.4"}' 
+
+*** SHOULD get response body back for DISTANCE calculation!
+
+4) TROUBLESHOOT:  java.net.BindException: Address already in use
+Daphnes-Air:~ daphneeng$ lsof -i:9000
+COMMAND  PID      USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+java    3919 daphneeng   39u  IPv6 0x5c7d8ca9a1bab669      0t0  TCP *:cslistener (LISTEN)
+Daphnes-Air:~ daphneeng$ kill 3919

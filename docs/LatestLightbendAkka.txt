@@ -1,0 +1,12 @@
+
+1) Akka Http Template
+http://www.lightbend.com/activator/template/akka-http-microservice
+
+2) Microservices - Reactive Communication Patterns
+http://www.lightbend.com/activator/template/reactive-microservices
+
+3) Web Sockets - Anonymous Chat
+http://www.lightbend.com/activator/template/anonymous-chat
+
+4) Reactive API - 
+

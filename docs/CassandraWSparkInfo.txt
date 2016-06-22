@@ -1,0 +1,25 @@
+
+1) Cassandra installation
+
+http://docs.datastax.com/en/latest-dse/datastax_enterprise/install/installNoSudoOrMac.html
+
+2) Cassandra-Spark Support
+
+https://academy.datastax.com/content/virtual-box-dse-spark
+
+3) Zeppelin with Spark
+
+https://github.com/victorcouste/zeppelin-spark-cassandra-demo
+
+4) Free Cassandra Big Data courses
+
+https://academy.datastax.com/courses
+
+5) Cassandra-Spark intro
+
+http://www.slideshare.net/dtrapezoid/oscon-talk-becoming-friends-with-cassandra-and-spark
+
+https://www.youtube.com/watch?v=X-FKmKc9hkI
+
+
+ 
