@@ -1,0 +1,18 @@
+
+1) RE:  Akka HTTP Service Template
+
+IMPORTs
+? reminder how Scala 'implicit' declarations work for imports
+
+CASE classes
+? what ‘implicit val’ declaration does
+? IpPairSummary what 'apply' method does for Case class; as INPUT to Spray jsonFormatters
+
+GIT
+? how to Git delete physically deleted file!
+
+AKKA-HTTP
+? HttpResponse uses ReactiveStreams logic; and Future handles retries, error-handling etc
+
+2) STUFF!2) STUFF!
+
