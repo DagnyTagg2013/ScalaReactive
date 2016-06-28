@@ -14,5 +14,4 @@ GIT
 AKKA-HTTP
 ? HttpResponse uses ReactiveStreams logic; and Future handles retries, error-handling etc
 
-2) STUFF!2) STUFF!
 

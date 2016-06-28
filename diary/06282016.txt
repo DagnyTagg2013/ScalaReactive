@@ -1,0 +1,8 @@
+
+1) Webinar notes on Akka Streams
+
+2) Docs on Akka Streams getting started
+
+3) Start Project with SBT and Git dependencies 
+
+4) GitHub checkins of reference docs and starter code!
