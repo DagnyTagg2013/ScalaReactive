@@ -6,3 +6,5 @@
 3) Start Project with SBT and Git dependencies 
 
 4) GitHub checkins of reference docs and starter code!
+
+5) Git review!!!
