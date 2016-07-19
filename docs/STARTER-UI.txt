@@ -1,4 +1,11 @@
 
+*********************************************************
+REACT w D3:
+- http://react-university.github.io/react-and-d3-workshop/
+- https://egghead.io/lessons/react-react-in-7-minutes
+- https://www.youtube.com/watch?v=I7IdS-PbEgI
+- https://www.twilio.com/blog/2015/08/setting-up-react-for-es6-with-webpack-and-babel-2.html (BABEL deprecated now?)
+
 1) IDEA: New Project, Empty Project
 
 2) IDEA:  New Module, Static Web, React Seed-Template
@@ -167,7 +174,7 @@ https://auth0.com/blog/2014/01/15/auth-with-socket-io/
 *** Firebase
 https://www.firebase.com/blog/2015-05-29-react-native.html
 
-*** TODO:  Advanced REST Client for Chrome Browser
+*** POSTMAN Mac App:   REST Client for Chrome Browser
 
 *** TODO:  OAuth2; how it works!
 http://stackoverflow.com/questions/4727226/on-a-high-level-how-does-oauth-2-work
@@ -183,7 +190,6 @@ http://www.slideshare.net/benlesh1/rx-js-and-reactive-programming-may-2015
 
 *** Learning Web UI stuff!
 https://www.freecodecamp.com/
-
 
 
 
