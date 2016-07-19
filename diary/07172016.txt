@@ -1,0 +1,66 @@
+
+1) Response from Akka Team on CENTRAL MAVEN REPO to look at:
+http://search.maven.org/#search%7Cga%7C1%7Cakka-http-experimental
+
+2) Cheat Sheet on SB to look at:
+http://grosdim.blogspot.com/2013/01/quick-sbt-tutorial.html
+
+3) UNRESOLVED DEPENDENCIES...
+
+4) THEN:  try using v2.11.8 of Scala; and taking VERSION number, not artifactID
+from the REPO!!! NOT use -M5 releases as NOT OFFICIAL STABLE!!!
+
+5) ALSO found this for essentially doing an sbt clean within IntelliJ IDE:
+http://stackoverflow.com/questions/29166100/intellij-fully-clean-re-resolve-and-rebuild-scala-sbt-project
+
+This worked for me: "...close IntelliJ and delete all files in .idea/libraries"
+
+cd /
+find . -name ".idea"
+
+goto specific project directory and 
+
+rm -rf .idea/libraries
+
+AND:
+http://stackoverflow.com/questions/4483230/an-easy-way-to-get-rid-of-everything-generated-by-sbt
+
+sbt clean clean-files
+
+find . -name target -type d -exec rm -rf {} \;
+
+
+
+
+
+6) view latest SBT output:
+
+cd ~/Library/Logs/IntellijIdea15
+
+vim sbt.last.log
+
+7) GitHub Issue log here:
+
+https://github.com/vrcod/akka-sample-twitter-streaming/issues
+
+org.json4s#json4s-native_2.11;2.4.8: not found
+
+8) Typesafe issue log here:
+
+http://www.lightbend.com/activator/template/akka-sample-twitter-streaming
+
+9) ALTERNATIVE tutorials:
+
+9.1) Play 2.5-AkkaStreams tutorial & example here:
+https://github.com/loicdescotte/touiteur
+
+9.2) Manning Reactive Web Applications tutorial & support here:
+https://manning.com/books/reactive-web-applications
+https://forums.manning.com/forums/reactive-web-applications
+https://manning.com/catalog
+https://github.com/manuelbernhardt/reactive-web-applications
+
+9.3) Typesafe Akka Streams Tutorial here:
+http://www.lightbend.com/activator/template/akka-http-websocket-reactive-streams
+
+  

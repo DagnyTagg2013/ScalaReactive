@@ -1,0 +1,17 @@
+
+Setup Twitter API account access and Access Tokens here:
+https://dev.twitter.com/apps
+
+1) Delete existing App and Create a new one to start fresh
+2) enter (different) valid URLs for BOTH Website AND Callback URL entries
+These can be any valid URLs; and are placeholder dummy values.
+3) goto Permissions tab for App and change to 'Read, Write, Access'; save changes
+4) goto API Keys tab for App and click button to 'Regenerate API Keys'; refresh Browser to see keys change
+5) goto API Keys tab for App and click Create Access Token
+
+URL for streaming here:
+https://stream.twitter.com/1.1/statuses/sample.json
+
+to run:
+python twitterstream.py > output.txt
+

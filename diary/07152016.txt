@@ -1,0 +1,71 @@
+
+1) Python to stream tweets from Twitter API
+- utils directory 
+
+2) akka-sample-twitter-streaming Activator Template:
+
+- downloaded zip; expanded to .../ProjectsScala
+- from Finder; navigate to directory containing the activator.bat file
+- Ctrl-click or rclick on 'activator' file
+- select project from RHS window
+- select Compile/Build project
+- can do Ctrl+C to shutdown Activator
+
+- NOW in IntelliJ; can IMPORT project from SOURCE;
+see SBT tab on RHS of IDE!
+
+3) posted questions for tutorial at Typesafe site here:
+
+http://www.lightbend.com/activator/template/akka-sample-twitter-streaming
+
+4) found out help resources here:
+
+https://groups.google.com/forum/#!forum/akka-user
+https://twitter.com/akkateam
+https://github.com/akka/akka
+http://stackoverflow.com/questions/tagged/akka
+http://akka.io/
+
+5) find out Maven build dependencies here:
+http://mvnrepository.com/artifact/com.typesafe.akka/akka-stream-experimental_2.11
+
+for apparent bug in akka http here about Connection Close:
+https://github.com/akka/akka/issues/20236
+
+6) REFRESH SBT in IntelliJ
+
+- modified build.sbt to use v2.0.4 for both
+- RHS, SBT tab
+- hit circular arrow button top LHS for REFRESH of dependencies w downloads!
+
+7) (WARNING) Scala compiler dependencies version conflict -- how to resolve?
+
+warn] Multiple dependencies with the same organization/name but different versions. To avoid conflict, pick one version: [warn] * org.scala-lang:scala-compiler:(2.11.0, 2.11.7) [warn] * org.scala-lang:scala-reflect:(2.11.0, 2.11.7) [warn] * org.scala-lang.modules:scala-xml_2.11:(1.0.5, 1.0.4
+
+8) after dependencies resolved with (6); get compilation errors:
+Error:(96, 62) type mismatch;
+ found   : akka.http.scaladsl.model.MediaType.WithOpenCharset
+ required: akka.http.scaladsl.model.MediaType.WithFixedCharset
+				entity = HttpEntity(contentType = ContentType(MediaTypes.`application/x-www-form-urlencoded`), string = body)
+				                                                with apparent scalac bug:
+https://github.com/akka/akka/issues/19418
+
+SO modify build.sbt with newest Scala version
+
+BUT get:
+
+Error:Error while importing SBT project:<br/>...<br/><pre>[warn] 	Note: Unresolved dependencies path:
+[warn] 		com.typesafe.akka:akka-stream-experimental_2.12.0-M5:2.0.4 (/Users/daphneeng/TECH-Practice/ProjectsScala/akka-sample-twitter-streaming/build.sbt#L8-16)
+[error] unresolved dependency: com.typesafe.akka#akka-http-experimental_2.12.0_m5;2.0.4: not found
+[error] unresolved dependency: org.json4s#json4s-native_2.12.0-M5;3.3.0: not found
+
+and similar for
+hunorkovacs#koauth
+ 
+9) Akka Release Documentation here:
+
+http://akka.io/docs/
+
+10) Posted SBT library dependencies Q onto Akka User LIst
+
+
