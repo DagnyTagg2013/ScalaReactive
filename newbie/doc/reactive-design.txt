@@ -54,3 +54,7 @@ I've found these relevant Activator Templates; and am working through munging th
 1) http://www.lightbend.com/activator/template/akka-http-websocket-reactive-streams
 2) http://www.lightbend.com/activator/template/akka-sample-twitter-streaming
 3) ://medium.com/@kvnwbbr/a-journey-into-reactive-streams-5ee2a9cd7e29#.2izhdcabm
+
+7) TODO:  VERIFY PROPER CLOSE/CLEANUP
+- How would this client typically force a CLOSE for the socket connection?
+- You can use a KillSwitch: http://doc.akka.io/docs/akka/2.4/scala/stream/stream-dynamic.html#Controlling_graph_completion_with_KillSwitch
