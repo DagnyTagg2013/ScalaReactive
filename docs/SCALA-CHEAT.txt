@@ -1,2 +1,4 @@
 
+https://www.cis.upenn.edu/~matuszek/Concise%20Guides/Concise%20Scala.html
+
 https://github.com/lampepfl/progfun-wiki/blob/gh-pages/CheatSheet.md

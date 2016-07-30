@@ -1,0 +1,41 @@
+
+1) Found this for essentially doing an sbt clean within IntelliJ IDE:
+http://stackoverflow.com/questions/29166100/intellij-fully-clean-re-resolve-and-rebuild-scala-sbt-project
+
+(THEN @ Project directory on cmd-line, where build.sbt is):
+
+This worked for me: "...close IntelliJ and delete all files in .idea/libraries"
+
+cd /
+find . -name ".idea"
+
+goto specific project directory and
+
+rm -rf .idea/libraries
+
+AND:
+http://stackoverflow.com/questions/4483230/an-easy-way-to-get-rid-of-everything-generated-by-sbt
+
+sbt clean clean-files
+
+sbt reload
+
+sbt update
+
+find . -name target -type d -exec rm -rf {} \;
+
+
+2)  THEN; go into SBT-Project setup on IDEA15
+
+- select SBT window on RHS
+- hit REFRESH button to refresh
+
+3) Central Maven Repo
+
+http://search.maven.org/#search%7Cga%7C1%7Cakka%20http
+
+4) HELLO!
+http://www.bks2.com/blog/2013/02/17/zero-to-Scala/
+
+5) INTELLIJ IDEA15; AND THEN need to CREATE LIBRARY; SELECT Scala SDK version!!!
+
