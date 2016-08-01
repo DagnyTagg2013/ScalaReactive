@@ -65,6 +65,23 @@
   * - git checkout <mylocalmergebranch>
   * - git pull <remotealias> <remotebranch>
   *
-  * *** REBASE vs MERGE EDU!
+  * *** DIFF!
+  * - http://stackoverflow.com/questions/10039747/how-to-view-file-diff-in-git-before-commit
+  * If you want to see what you haven't git added yet:
+  * git diff -- myfile.txt
+  * or if you want to see already-added changes
+  * git diff --cached -- myfile.txt
+  *
+  * - http://stackoverflow.com/questions/17688594/how-to-diff-between-local-uncommitted-changes-and-origin
+  * $ git fetch origin
+  * $ git diff origin/master
+  * 
+  * *** ROLLBACK AN ADD!
+  * - http://stackoverflow.com/questions/348170/how-to-undo-git-add-before-commit
+  *
+  * git reset <file>
+  *
+  *
+  *** REBASE vs MERGE EDU!
   * https://www.atlassian.com/git/tutorials/merging-vs-rebasing/conceptual-overview
   *
