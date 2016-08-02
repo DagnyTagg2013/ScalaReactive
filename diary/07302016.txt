@@ -1,7 +1,0 @@
-
-1) investigation of AKKA resources:  capture of info from Blogs, Documentation, and Code Samples
-
-2) got a working sample of AKKA Graph DSL up from modification of Code Sample to latest 2.4.8 APIs!
-
-
- 
