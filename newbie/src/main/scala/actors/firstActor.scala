@@ -3,13 +3,22 @@ package actors
 /**
   * Created on 9/1/16.
   *
-  * INPSPIRED BY:
+  * INSPIRED BY:
   * - https://www.toptal.com/scala/concurrency-and-fault-tolerance-made-easy-an-intro-to-akka
   * - https://gist.github.com/Diego81/9887105
   *
   * ADAPTED to work with Akka v2.4.9
   * - http://doc.akka.io/docs/akka/snapshot/scala/actors.html
   *
+  * GO READ THIS for info on ActorSystem, Context, Props, etc:
+  * - http://doc.akka.io/docs/akka/2.4.9/general/actor-systems.html#id1
+  * - http://doc.akka.io/docs/akka/current/scala/actors.html
+  *
+  * TODOs
+  * - find out best-practices for sender retries, receiver duplicate-message-checking i.e. with Sequence IDs?
+  * - suspect best-practice is for parent to message children to shutdown to prevent mid-flow-processing errors
+  * - find out best-practices for handling parent-master SPF
+  * - find out operation of Akka-Cluster as far as down-Actor detection and up-replicated-Actor creation
   */
 import akka.actor.{ Actor, ActorRef, Props, ActorSystem }
 
