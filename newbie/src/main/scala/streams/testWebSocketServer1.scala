@@ -1,5 +1,7 @@
 
-import akka.http.scaladsl.testkit.{WSProbe}
+package streams
+
+import akka.http.scaladsl.testkit.WSProbe
 import akka.util.ByteString
 
 // ATTN:  following TWO import(s) needed for ~> Operator!
@@ -8,7 +10,7 @@ import GraphDSL.Implicits._
 import akka.stream.scaladsl.GraphDSL
 
 import akka.http.scaladsl.model.ws._
-import akka.http.scaladsl.server.{ UnsupportedWebSocketSubprotocolRejection, ExpectedWebSocketRequestRejection, Route, RoutingSpec }
+import akka.http.scaladsl.server.{ UnsupportedWebSocketSubprotocolRejection, ExpectedWebSocketRequestRejection, Route }
 
 
 // ATTN:  INSPIRATION!
@@ -19,6 +21,7 @@ import akka.http.scaladsl.server.{ UnsupportedWebSocketSubprotocolRejection, Exp
 
 // TESTS:
 // Create a testing probe representing the client-side
+  /*
 val wsClient = WSProbe()
 
 // WS creates a WebSocket request for testing
@@ -41,6 +44,7 @@ WS("/greeter", wsClient.flow) ~> streamsWebSocket.requestHandler ~>
     wsClient.expectMessage("Hello John!")
 
   }
+  */
 
 
 

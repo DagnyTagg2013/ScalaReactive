@@ -1,4 +1,4 @@
-
+package streams
 
 /**
   * Created on 8/18/16.
@@ -202,7 +202,8 @@ object firstWebSocketServer extends App {
     case exc: TimeoutException =>
       println("Server took to long to startup, shutting down")
       // TODO:  verify if this is correct way to shutdown, as DEPRECATED method!
-      actorSystem.shutdown()
+      // actorSystem.shutdown()
+      actorSystem.terminate()
   }
 
 } // END APP

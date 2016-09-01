@@ -1,8 +1,17 @@
+package streams
+
+
 import akka.http.scaladsl.model.ws.{BinaryMessage, TextMessage, Message, UpgradeToWebSocket}
 import akka.http.scaladsl.model.{Uri, HttpResponse, HttpRequest}
 import akka.http.scaladsl.model.HttpMethods._
 import akka.stream.scaladsl.{Sink, Source, Flow}
 import akka.http.scaladsl.model.ws.{ TextMessage, Message, BinaryMessage }
+
+import akka.actor.ActorSystem
+import scala.concurrent.ExecutionContext
+import ExecutionContext.Implicits.global
+import akka.stream.ActorMaterializer
+
 
 
 /**
@@ -19,9 +28,14 @@ import akka.http.scaladsl.model.ws.{ TextMessage, Message, BinaryMessage }
 // - Go look at Akka TestKit to see how this maybe aligned with automated tests; say for
 //   FINAL-SEQUENCED RESULTS!
 // - http://doc.akka.io/docs/akka/current/scala/testing.html
+// - http://stackoverflow.com/questions/36945414/how-do-i-supply-an-implicit-value-for-an-akka-stream-materializer-when-sending-a
+// - http://stackoverflow.com/questions/32240359/is-it-possible-to-make-an-akka-http-core-client-request-inside-an-actor
 
 
 object  streamsWebSocket extends App {
+
+  implicit val system = ActorSystem()
+  implicit val materializer = ActorMaterializer()
 
   // HANDLING REQUEST @ given URL path via pattern-match
   val requestHandler: HttpRequest => HttpResponse = {

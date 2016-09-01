@@ -1,5 +1,8 @@
 /**
   * Created on 8/26/16.
+  *
+  * INSPIRED BY:
+  * -
   */
 import akka.actor.ActorSystem
 import akka.stream._
@@ -9,8 +12,7 @@ import akka.stream.scaladsl.{Sink, Source, Flow}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 // TODO:  review Singleton object syntax!
-object firstStreams extends App {            http://stackoverflow.com/questions/31579385/connection-between-js-and-akka-http-websocke:ts-fails-95-of-the-time/36393417
-
+object firstStreams extends App {
 
   val system = ActorSystem("LifecycleDemo")
   implicit val materializer = ActorMaterializer.create(system)

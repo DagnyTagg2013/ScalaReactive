@@ -26,5 +26,5 @@ document.addEventListener("DOMContentLoaded", function (event) {
         document.getElementById("response").innerHTML = event.data;
     };
 
-    // TODO: Any need to CLOSE websocket?
+    // TODO: Any need to CLOSE websocket? OR Shutdown and Cleanup anything?
 })

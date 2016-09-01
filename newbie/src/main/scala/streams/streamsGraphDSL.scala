@@ -1,3 +1,5 @@
+package streams
+
 /**
   * Created on 7/29/16.
   */
@@ -8,7 +10,8 @@
 /*
 - (1) This is plagiarized from Kevin Webber of Lightbend (BUT adapted from using FlowGraph to GraphDSL!
 https://medium.com/@kvnwbbr/a-journey-into-reactive-streams-5ee2a9cd7e29#.vb64a0ja9
-- (2) This is modified according to latest Akka 2.4.8 Docs here:
+- (2) This is modified acco
+rding to latest Akka 2.4.8 Docs here:
 http://doc.akka.io/docs/akka/2.4.8/scala/stream/stream-quickstart.html#broadcasting-a-stream
  */
 
