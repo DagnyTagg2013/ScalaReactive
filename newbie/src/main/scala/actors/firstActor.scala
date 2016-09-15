@@ -1,6 +1,7 @@
 package actors
 
 /**
+  *
   * Created on 9/1/16.
   *
   * INSPIRED BY:
@@ -11,14 +12,48 @@ package actors
   * - http://doc.akka.io/docs/akka/snapshot/scala/actors.html
   *
   * GO READ THIS for info on ActorSystem, Context, Props, etc:
-  * - http://doc.akka.io/docs/akka/2.4.9/general/actor-systems.html#id1
   * - http://doc.akka.io/docs/akka/current/scala/actors.html
+  * - http://doc.akka.io/docs/akka/2.4.9/general/actor-systems.html#id1
   *
-  * TODOs
-  * - find out best-practices for sender retries, receiver duplicate-message-checking i.e. with Sequence IDs?
-  * - suspect best-practice is for parent to message children to shutdown to prevent mid-flow-processing errors
-  * - find out best-practices for handling parent-master SPF
-  * - find out operation of Akka-Cluster as far as down-Actor detection and up-replicated-Actor creation
+  * HUGE QUANDARY:
+  * - Akka Clustering solution requires hardcoding of IPs of Cluster Nodes -- an Ops nightmare on adding-deleting Nodes
+  * - it also has finicky Master-Slave hierarchy requirements for Startup and Shutdown protocols -- not elegant and a SPOF vs Peer-to-Peer
+  * - NOT SURE how Akka Actors State-Machine info can integrate well with Cassandra!
+  * - is it necessary to use the KRYO serializer?
+  * - Actors should handle events (i.e., process messages) asynchronously and should not block,
+  * otherwise context switches will happen which can adversely affect performance.
+  * Specifically, it is best to perform blocking operations (IO, etc.) in a Future so as not to block the actor; i.e.:
+  *
+  * case evt => blockingCall() // BAD
+  * case evt => Future {
+  *   blockingCall()           // GOOD
+  * }
+  *
+  *
+  * NOTE:
+  * - BAD practice is to pass out references to internal Actor state on messages out
+  * - INSTEAD, have incremental state requests on messages INTO Actor which modifies its OWN state
+  * - GOOD practice to have FACTORY METHOD Props() on SINGLETON object for class to invoke from implicit thread-pooling Context:
+  *  context.actorOf(DemoActor.props(42), "demo")
+  *
+  * TODOs:
+  * - CONFIGURABLE CREATION with ApplicationContext external startup config file using DEPENDENCY INJECTION INSTEAD of empty Props() file?
+  * - LOCATION TRANSPARENCY for Actor Creation required Application.conf WITH HARDCODED NODES!
+  * http://doc.akka.io/docs/akka/current/general/remoting.html
+  * - TODO:  SUPERVISOR STRATEGY USAGE, as well as SPOF if MASTER SUPERVISOR fails!
+  *   http://doc.akka.io/api/akka/2.3.0/#akka.actor.SupervisorStrategy
+  *   SHUTDOWN (top-down or bottom-up?) of hierarchy via delegating "ActorSystem.terminate",
+  *   or "Manager.gracefulStop() with timeout" or via Supervisor's "DeathWatch" or via "Poison Pill"?
+  * - FAULT-TOLERANCE SPOF risk with Master-Parent Actor Lifecycle; then how is that managed to RECONSTITUTE state
+  * - What are best-practices for Hierarchy Lifetime Management
+  * - What is default message ordering --  async or serial-single-threaded?
+  * - How does this integrate with persistence TO = FROM FLOWs!
+  * - find out best-practices for RECEIVER retries, RECEIVER duplicate-message-checking i.e. with Sequence IDs?
+  * - find out how to integrate with Cassandra distributed UUID generator in a CLUSTER scenario for auto-replication, dynamic scaling, e
+  * - find out fault-tolerance with Akka-Cluster as far as down-Actor detection and up-replicated-Actor serialization-from-disk!
+  * - find out data-modeling for coordination between services via foreign-key-UUID for associations!
+  * - find out TIMEOUT and RETRY logic!
+  *
   */
 import akka.actor.{ Actor, ActorRef, Props, ActorSystem }
 
@@ -39,6 +74,9 @@ case class StartProcessFileMsg()
 
 class WordCounterActor(filename: String) extends Actor {
 
+  // TODO:  how to TEST this
+  // implicit val timeout = Timeout(5 seconds)
+
   private var running = false
   private var totalLines = 0
   private var linesProcessed = 0
@@ -58,12 +96,14 @@ class WordCounterActor(filename: String) extends Actor {
         fromFile(filename).getLines.foreach { line =>
           context.actorOf(Props[StringCounterActor]) ! ProcessStringMsg(line)
           totalLines += 1
+          println("Sent a Line Message for Line: %s".format(line))
         }
       }
     }
     case StringProcessedMsg(words) => {
       result += words
       linesProcessed += 1
+      println("Received a Word Count Message with count:  %d".format(words))
       if (linesProcessed == totalLines) {
         fileSender.map(_ ! result) // provide result to process invoker
       }
@@ -83,7 +123,8 @@ object Sample extends App {
   // API deprecated
   //override def main(args: Array[String]) {
   val system = ActorSystem("System")
-  val actor = system.actorOf(Props(new WordCounterActor(args(0))))
+  // val actor = system.actorOf(Props(new WordCounterActor(args(0))))
+  val actor = system.actorOf(Props(new WordCounterActor("./testdata/quotes.txt")))
   implicit val timeout = Timeout(25 seconds)
   val future = actor ? StartProcessFileMsg()
   future.map { result =>

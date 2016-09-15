@@ -2,7 +2,8 @@
   * Created on 8/26/16.
   *
   * INSPIRED BY:
-  * -
+  * - @ktso
+  * http://blog.akka.io/streams/2016/07/06/threading-and-concurrency-in-akka-streams-explained
   */
 import akka.actor.ActorSystem
 import akka.stream._
@@ -12,7 +13,7 @@ import akka.stream.scaladsl.{Sink, Source, Flow}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 // TODO:  review Singleton object syntax!
-object firstStreams extends App {
+object streamsConcurrency extends App {
 
   val system = ActorSystem("LifecycleDemo")
   implicit val materializer = ActorMaterializer.create(system)
