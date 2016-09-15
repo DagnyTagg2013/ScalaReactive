@@ -1,0 +1,35 @@
+
+1) RUN Web Server to serve content and test results on Browser
+
+* assume NPM installed globally
+* in LOCAL PROJECT
+npm install grunt; or GLOBALLY npm install -g grunt
+* created Gruntfile.js in project root directory
+* creat package.json in project root directory
+* grunt --version to see which version of grunt installed
+* @ Project root directory:
+- npm install -g grunt-cli
+- npm install grunt-connect
+- npm install ws
+* grunt
+- to run web server from terminal AFTER selecting Terminal window from Intellij IDE
+* open Chrome to http://localhost:9000 to enter index.html!
+* Ctrl+C to stop web server in terminal
+
+2) Setting up JQuery support with Bower dependency installation
+
+   > after including JQuery base scripts in angular project,
+    - in terminal at root of project:
+    bower install jquery
+    - adding the following include in index.html
+    <script src="bower_components/jquery/dist/jquery.js" type="text/javascript"></script>
+    - use entrypoint as in basicJQuery.js
+    $(document).ready(
+        function() {
+        }
+      );
+   - http://stackoverflow.com/questions/13743058/how-to-access-the-scope-variable-in-browsers-console-using-angularjs
+
+3) Chrome Dev:  Debugging with Breakpoints
+- https://developer.chrome.com/devtools/docs/javascript-debugging#breakpoints
+- http://stackoverflow.com/questions/32295612/inspect-js-variables-in-chrome-developer-tools
