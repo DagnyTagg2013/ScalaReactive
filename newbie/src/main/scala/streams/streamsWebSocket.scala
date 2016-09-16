@@ -1,15 +1,17 @@
 package streams
 
 
+import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.ws.{BinaryMessage, TextMessage, Message, UpgradeToWebSocket}
 import akka.http.scaladsl.model.{Uri, HttpResponse, HttpRequest}
 import akka.http.scaladsl.model.HttpMethods._
 import akka.stream.scaladsl.{Sink, Source, Flow}
 import akka.http.scaladsl.model.ws.{ TextMessage, Message, BinaryMessage }
 
+// import scala.concurrent.ExecutionContex
+// t
+// import ExecutionContext.Implicits.global
 import akka.actor.ActorSystem
-import scala.concurrent.ExecutionContext
-import ExecutionContext.Implicits.global
 import akka.stream.ActorMaterializer
 
 
@@ -20,10 +22,13 @@ import akka.stream.ActorMaterializer
   */
 // ATTN:  INSPIRATION!
 // - http://doc.akka.io/docs/akka/2.4.9/scala/http/routing-dsl/websocket-support.html
+// TODO:  Look at this example to see how to use TESTKIT for WebSocket Server Code!
+// - https://github.com/akka/akka/blob/v2.4.9/akka-docs/rst/scala/code/docs/http/scaladsl/server/WebSocketExampleSpec.scala#L110
+//
 // TODO:
 // - Find out if error-handling for Routes approach is as good as request-handler approach!
 // TODO:
-// - Go look at AkkaHttpServer Activator Tempalte to see how Application.conf can be used!
+// - Go look at AkkaHttpServer Activator Template to see how Application.conf can be used!
 // TODO:
 // - Go look at Akka TestKit to see how this maybe aligned with automated tests; say for
 //   FINAL-SEQUENCED RESULTS!
@@ -94,4 +99,18 @@ object  streamsWebSocket extends App {
         bm.dataStream.runWith(Sink.ignore)
         Nil
     }
+
+  // ATTN:  MUST HAVE ENTRY-POINT INTO WEBSERVER HERE
+  // TODO:  figure out if Handle, HandleSync, or HandleAsync is most REACTIVE -- maybe ASYNC?
+  val bindingFuture =
+    Http().bindAndHandleSync(requestHandler, interface = "localhost", port = 8080)
+
+  println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
+  Console.readLine()
+
+  import system.dispatcher // for the future transformations
+  bindingFuture
+    .flatMap(_.unbind()) // trigger unbinding from the port
+    .onComplete(_ => system.terminate()) // and shutdown when done
+
 }

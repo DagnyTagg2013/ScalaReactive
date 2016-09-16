@@ -7,12 +7,6 @@
  * - http://stackoverflow.com/questions/32709270/padrino-websockets-heroku-connection-closed-before-receiving-a-handshake-resp
  */
 
-/*
-ERROR:
- WebSocket connection to 'ws://localhost:9000/greeter' failed: Connection closed before receiving a handshake response
- basicWebSockets.js:30 WebSocket Error: [object Event]
- */
-
 
 // "use strict";
 
@@ -23,13 +17,12 @@ ERROR:
 
 // TODO:  Verify this is all that's needed to initiate a websocket negotiation with the Server?
 // What if the SERVER negotiates and does a PUSH?
-// TODO:  verify DEFAULT PORT that Akka Http Sever runs from
-var wsConnection = new WebSocket("ws://localhost:9000/greeter");
+// TODO:  verify DEFAULT PORT that Akka Http Sever runs from; AND don't use GRUNT CLIENT-SIDE SERVER!
+var wsConnection = new WebSocket("ws://localhost:8080/greeter");
 
 // Show a connected message when the WebSocket is opened.
 wsConnection.onopen = function(event) {
-    socketStatus.innerHTML = 'Connected to: ' + event.currentTarget.URL;
-    socketStatus.className = 'open';
+    console.log('Connected to: ' + event.currentTarget.URL);
 };
 
 // Handle any errors that occur.
