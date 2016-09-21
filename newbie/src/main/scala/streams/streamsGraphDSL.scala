@@ -26,11 +26,11 @@ import GraphDSL.Implicits._
 // ATTN:  TAKEAWAYS!
 
 
-// TODO:  necessary to create SINGLETON INSTANCE; as no STATICs w Classes in Scala!
+// NOTE:  necessary to create SINGLETON INSTANCE; as no STATICs w Classes in Scala!
 object streamsGraphDSL extends App {
 
-  // TODO:  Is it necessary create 1:1 ActorSystems PER Graph, or Flow Pipeline?
-  // TODO:  Typically use DEFAULT ActorMaterializer?
+  // TODO 1:  Is it necessary create 1:1 ActorSystems PER Graph, or Flow Pipeline; or only for WHOLE SYSTEM?
+  // TODO 2:  Typically use DEFAULT ActorMaterializer?
   implicit val system = ActorSystem("Sys")
   implicit val materializer = ActorMaterializer()
 
@@ -38,7 +38,7 @@ object streamsGraphDSL extends App {
 
   val myGraph = RunnableGraph.fromGraph(GraphDSL.create() {
 
-    // TODO:  confused about this EXACT syntax, as have to init/create; but statements below refer to itself!
+    // TODO:  confused about this line, as have to init/create a builder; but statements within refer to builder itsef?
     implicit aBuilder =>
 
       // ATTN:  this defines a Graph SINK that prints results
@@ -61,13 +61,13 @@ object streamsGraphDSL extends App {
       inputSource ~> f1 ~> aBroadCast ~> f2 ~> aMerge ~> f3 ~> displayResultSink
       aBroadCast ~> f4 ~> aMerge
 
-      // TODO:  understand what following does; and does it CLOSE/UNALLOCATE materialized pipeline?
+      // TODO 3:  understand what following does; and does it CLOSE/UNALLOCATE materialized pipeline?
       ClosedShape
 
   } // end of Graph Create
   ) // end of RunnableGraph.fromGraph
 
-  // TODO:  RunnableGraph doesn't have INITIAL take() or onNext() methods to BOUND Stream Sink results from!
+  // TODO 4:  RunnableGraph doesn't have INITIAL take() or onNext() methods to BOUND Stream Sink results from!
   /*
   val MAX_BOUND_RESULT_SIZE = 7
   // OK. Collect up until max-th elements only, then cancel upstream
@@ -76,11 +76,12 @@ object streamsGraphDSL extends App {
   */
 
   /*
-      TODO:  want to use Subscriber.onNext() API to get real-Time results; i.e. simulate where Source is a real unbounded STREAM
-      TODO:  is it only necessary to use Subscriber.request(7) to signal INITIAL pull buffer from Subscriber
+      TODO 5:  want to use Subscriber.onNext() API to get real-Time results; i.e. simulate where Source is a real unbounded STREAM
+      TODO 6:  is it only necessary to use Subscriber.request(7) to signal INITIAL pull buffer from Subscriber,
+               OR is onNext() called implicitly within the API implementation; so no need to be map/looping?
       but then that's a MAX flow rate of Subscriber; and what if that somehow slows down, and
       we need to change Subscription buffer-size dynamically?
-      TODO:  how to stop and cleanup-release materialized pipeline?
+      TODO 7:  how to stop and cleanup or release materialized pipeline?
   */
 
   // ATTN:  this MATERIALIZEs the Graph DSL on RUN!

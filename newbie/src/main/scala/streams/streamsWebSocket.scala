@@ -50,10 +50,9 @@ object  streamsWebSocket extends App {
     // CASE to support WebSocket Request
     // CHEAT:  Akka Symbols
     // http://stackoverflow.com/questions/17644273/akka-in-scala-exclamation-mark-and-question-mark
-    // TODO:  verify if this is all that's needed to handle incoming JS request
-    // TODO:  verify changes for SERVER-initiated data push to JS client!
-
-    // TODO:  add nicer logging!
+    // ATTN:  following handles a Web Socket connection request!
+    // TODO 1:  verify changes for SERVER-initiated data push to JS client!
+    // TODO 2:  add nicer logging!
     case req @ HttpRequest(GET, Uri.Path("/greeter"), _, _, _) =>
       println("GOT 1:  handling Server Request!")
       req.header[UpgradeToWebSocket] match {
@@ -65,7 +64,7 @@ object  streamsWebSocket extends App {
       }
 
     // CASE to ignore all other requests
-    // TODO:  find out why sample code uses r instead of req
+    // TODO 3:  find out why sample code uses r instead of req
     case req: HttpRequest =>
       req.discardEntityBytes() // important to drain incoming HTTP Entity stream HttpResponse(404, entity = "Unknown resource!")
       HttpResponse(404, entity = "Unknown resource!")
@@ -100,8 +99,8 @@ object  streamsWebSocket extends App {
         Nil
     }
 
-  // ATTN:  MUST HAVE ENTRY-POINT INTO WEBSERVER HERE
-  // TODO:  figure out if Handle, HandleSync, or HandleAsync is most REACTIVE -- maybe ASYNC?
+  // ATTN:  MUST FIRST HAVE WEB SERVER UP AND LISTENING TO PORT HERE!
+  // TODO 4:  figure out if Handle, HandleSync, or HandleAsync is most REACTIVE -- maybe ASYNC?
   val bindingFuture =
     Http().bindAndHandleSync(requestHandler, interface = "localhost", port = 8080)
 
