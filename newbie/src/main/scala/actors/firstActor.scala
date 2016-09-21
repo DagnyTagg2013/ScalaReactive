@@ -16,9 +16,17 @@ package actors
   * - http://doc.akka.io/docs/akka/snapshot/scala/actors.html
   *
   * GO READ THIS for info on ActorSystem, Context, Props, etc:
+  * - http://doc.akka.io/docs/akka/current/general/actor-systems.html#actor-systems
   * - http://doc.akka.io/docs/akka/current/scala/actors.html
-  * - http://doc.akka.io/docs/akka/2.4.9/general/actor-systems.html#id1
   *
+  * Recommended Practices:
+It is a good idea to provide factory methods on the companion object of each Actor
+which help keeping the creation of suitable Props as close to the actor definition as possible.
+This also avoids the pitfalls associated with using the Props.apply(...) method which takes a by-name argument,
+since within a companion object the given code block will not retain a reference to its enclosing scope
+  *
+  *
+  * TODO 9:
   * HUGE QUANDARY:
   * - Akka Clustering solution requires hardcoding of IPs of Cluster Nodes -- an Ops nightmare on adding-deleting Nodes
   * - it also has finicky Master-Slave hierarchy requirements for Startup and Shutdown protocols -- not elegant and a SPOF vs Peer-to-Peer
@@ -45,7 +53,8 @@ package actors
   * - LOCATION TRANSPARENCY for Actor Creation required Application.conf WITH HARDCODED NODES!
   * http://doc.akka.io/docs/akka/current/general/remoting.html
   * - TODO 1:  SUPERVISOR-COORDINATED SHUTDOWN STRATEGY; but SPOF if MASTER SUPERVISOR fails!
-  *   HOW to shutdown simply and gracefully; via having Supervisor MESSAGE gracefully:
+  *   HOW to shutdown simply and gracefully; via having Supervisor MESSAGE Children, so they can finish processing their event queues
+  *   before final shutdown?
   *   - http://doc.akka.io/api/akka/2.3.0/#akka.actor.SupervisorStrategy
   *   SHUTDOWN (top-down or bottom-up?) of hierarchy via delegating "ActorSystem.terminate",
   *   or "Manager.gracefulStop() with timeout" or via Supervisor's "DeathWatch" or via "Poison Pill"?
