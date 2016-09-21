@@ -50,30 +50,41 @@ since within a companion object the given code block will not retain a reference
   * - GOOD practice to have FACTORY METHOD Props() on SINGLETON object for class to invoke from implicit thread-pooling Context:
   *  context.actorOf(DemoActor.props(42), "demo")
   *
-  * TODOs:
-  * - TODO 0:  CONFIGURABLE CREATION with ApplicationContext external startup config file using DEPENDENCY INJECTION INSTEAD of empty Props() file?
+  * TO FIND OUT:
+  *
+  * - TODO 0:  CONFIGURABLE CREATION with ApplicationContext external startup config file using
+  *            DEPENDENCY INJECTION INSTEAD of empty Props() file?
   * - LOCATION TRANSPARENCY for Actor Creation required Application.conf WITH HARDCODED NODES!
-  * http://doc.akka.io/docs/akka/current/general/remoting.html
-  * - TODO 1:  SUPERVISOR-COORDINATED SHUTDOWN STRATEGY; but SPOF if MASTER SUPERVISOR fails!
-  *   HOW to shutdown simply and gracefully; via having Supervisor MESSAGE Children, so they can finish processing their event queues
-  *   before final shutdown?
+  *   http://doc.akka.io/docs/akka/current/general/remoting.html
+  * - see Akka Http Activator!
+  *
+  * - TODO 1:  SUPERVISOR-COORDINATED SHUTDOWN STRATEGY RECOMMENDED; but SPOF if MASTER SUPERVISOR fails!
+  *   - HOW to detect shutdown -- i.e. do we need to reinvent the wheel with our own 'heartbeat'-check policy?
+  *   - HOW to shutdown simply and gracefully; via having Supervisor MESSAGE Children, so they can finish processing their event queues
+  *   before final shutdown:
   *   - http://doc.akka.io/api/akka/2.3.0/#akka.actor.SupervisorStrategy
   *   SHUTDOWN (top-down or bottom-up?) of hierarchy via delegating "ActorSystem.terminate",
-  *   or "Manager.gracefulStop() with timeout" or via Supervisor's "DeathWatch" or via "Poison Pill"?
-  * - TODO 2:  FAULT-TOLERANCE SPOF risk with Master-Parent Actor Lifecycle; then how is that managed to RECONSTITUTE state to
-  *   bring up replacement Actor (e.g. snapshot at time first Actor died,
-  *   including interim input message queue when first actor unavailable)
-  * - What are best-practices for Hierarchy Lifetime Management
-  * - TODO 3:  What is default message ordering --  serial-single-threaded, first-one-arriving-wins?
-  *             However, with multiple Senders on one Receiver; may not be ordered relative to each Sender's send order
-  * - How does this integrate with persistence TO = FROM FLOWs!
-  * - TODO 4:  find out best-practices for RECEIVER retries on ACK-TIMEOUT failures,
-  *            RECEIVER duplicate-message-checking i.e. with Sequence IDs?
-  * - TODO 5:  find out how to integrate with Cassandra distributed UUID generator in a CLUSTER scenario for auto-replication, dynamic scaling, e
-  * - TODO 6:  find out fault-tolerance with Akka-Cluster as far as down-Actor detection and
-  *            up-replicated-Actor serialization-from-disk ALONG with INTERIM-EVENT capture!
-  * - TODO 7:  find out data-modeling for coordination between microservices via foreign-key-UUID for associations!
-  * - TODO 8:find out TIMEOUT and RETRY logic!
+  *                                                                 OR "Manager.gracefulStop() with timeout"
+  *                                                                 OR via Supervisor's "DeathWatch"
+  *                                                                 OR via "Poison Pill"?
+  *
+  * - TODO 2:  FAULT-TOLERANCE --  how is that managed to RECONSTITUTE state to
+  *   bring up replacement Actor (e.g. recover from snapshot at time first Actor died,
+  *                                    including replay of interim input message queue while first Actor unavailable)
+  *
+  *
+  * - TODO 3:  What is default message ordering to an Actor --  serial-single-threaded, first-one-arriving-wins?
+  *            However, with multiple Senders on one Receiver and network latency; may not guarantee message order to Receiver
+  *            corresponding to Sender's message order.  i.e. Message Order is NOT guaranteed, BUT serialization of messaged to Actor IS
+  *
+  * - TODO 4:  find out best-practices for PUBLISHER retries on ACK-TIMEOUT failures from SUBSCRIBE
+  *
+  *
+  * - TODO 5:  find out how to integrate with Cassandra distributed UUID generator in a CLUSTER scenario for creating message
+  *            Sequence IDs to deal with ordering issues from (TODO 3) above
+
+  * - TODO 6:  find out data-modeling for coordination between microservices via foreign-key-UUID for associations!
+  *
    *
   */
 import akka.actor.{ Actor, ActorRef, Props, ActorSystem }
