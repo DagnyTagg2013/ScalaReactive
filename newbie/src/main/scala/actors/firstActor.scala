@@ -18,6 +18,8 @@ package actors
   * GO READ THIS for info on ActorSystem, Context, Props, etc:
   * - http://doc.akka.io/docs/akka/current/general/actor-systems.html#actor-systems
   * - http://doc.akka.io/docs/akka/current/scala/actors.html
+  * - integrating Streams with LOCAL Actors:
+  * http://doc.akka.io/docs/akka/2.4.10/scala/stream/stream-integrations.html#integrating-with-external-services
   *
   * Recommended Practices:
 It is a good idea to provide factory methods on the companion object of each Actor

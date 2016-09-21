@@ -22,13 +22,14 @@ import akka.stream.ActorMaterializer
   */
 // ATTN:  INSPIRATION!
 // - http://doc.akka.io/docs/akka/2.4.9/scala/http/routing-dsl/websocket-support.html
-// TODO:  Look at this example to see how to use TESTKIT for WebSocket Server Code!
-// - https://github.com/akka/akka/blob/v2.4.9/akka-docs/rst/scala/code/docs/http/scaladsl/server/WebSocketExampleSpec.scala#L110
+// - http://doc.akka.io/docs/akka/2.4.10/scala/http/server-side-https-support.html#serversidehttps-scala
+// - http://doc.akka.io/docs/akka/2.4.10/scala/http/low-level-server-side-api.html#controlling-server-parallelism
+// - Look at this example to see how to use TESTKIT for WebSocket Server Code!
+// https://github.com/akka/akka/blob/v2.4.9/akka-docs/rst/scala/code/docs/http/scaladsl/server/WebSocketExampleSpec.scala#L110
 //
 // TODO:
-// - Find out if error-handling for Routes approach is as good as request-handler approach!
-// TODO:
 // - Go look at AkkaHttpServer Activator Template to see how Application.conf can be used!
+//
 // TODO:
 // - Go look at Akka TestKit to see how this maybe aligned with automated tests; say for
 //   FINAL-SEQUENCED RESULTS!
@@ -36,6 +37,21 @@ import akka.stream.ActorMaterializer
 // - http://stackoverflow.com/questions/36945414/how-do-i-supply-an-implicit-value-for-an-akka-stream-materializer-when-sending-a
 // - http://stackoverflow.com/questions/32240359/is-it-possible-to-make-an-akka-http-core-client-request-inside-an-actor
 
+/*
+
+BACKPRESSURE
+
+http://doc.akka.io/docs/akka/2.4.10/scala/http/implications-of-streaming-http-entity.html#consuming-the-http-response-entity-client
+
+Discarding the HTTP Response Entity (Client)
+Sometimes when calling HTTP services we do not care about their response payload (e.g. all we care about is the response code),
+yet as explained above entity still has to be consumed in some way,
+otherwise we'll be exherting back-pressure on the underlying TCP connection.
+
+The discardEntityBytes convenience method serves the purpose of easily discarding
+the entity if it has no purpose for us. It does so by piping the incoming bytes directly into an Sink.ignore.
+
+*/
 
 object  streamsWebSocket extends App {
 
@@ -100,13 +116,24 @@ object  streamsWebSocket extends App {
     }
 
   // ATTN:  MUST FIRST HAVE WEB SERVER UP AND LISTENING TO PORT HERE!
-  // TODO 4:  figure out if Handle, HandleSync, or HandleAsync is most REACTIVE -- maybe ASYNC?
+  // TODO 4:  find out how to choose between  bind, bindAndHandleSync, or bindAndHandleAsync for most REACTIVE/RESPONSIVE processing
+  //          i.e. ALL methods wrap internal AKKA support for TCP backpressure;
+  //               but Async permits concurrent requests on a single connection without waiting for a response first
+  // TODO 5:  what are the most important failure handling scenarios to handle; or can this be handled internally with
+  //          any specific higher-level API that propogates errors through Try collections?
+  // - Handling HTTP Server failures in the Low-Level API
+  // http://doc.akka.io/docs/akka/2.4.10/scala/http/low-level-server-side-api.html#controlling-server-parallelism
+  // - routing-level exceptions
+  // http://doc.akka.io/docs/akka/2.4.10/scala/http/routing-dsl/exception-handling.html#exception-handling-scala
   val bindingFuture =
     Http().bindAndHandleSync(requestHandler, interface = "localhost", port = 8080)
 
   println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
   Console.readLine()
 
+  // TODO 6: Is it good practice to keep WebSocket connection open, monitoring for data on either Client or Server side;
+  //         i.e. is it OK to just wait until Server is shutdown instead of explicitly closing Websocket prior to that shutdown?
+  //         If not, how do you close that WebSocket explicitly, and outside of the request handlers?
   import system.dispatcher // for the future transformations
   bindingFuture
     .flatMap(_.unbind()) // trigger unbinding from the port
