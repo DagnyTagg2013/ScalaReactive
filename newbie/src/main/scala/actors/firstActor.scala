@@ -77,7 +77,7 @@ since within a companion object the given code block will not retain a reference
   *            However, with multiple Senders on one Receiver and network latency; may not guarantee message order to Receiver
   *            corresponding to Sender's message order.  i.e. Message Order is NOT guaranteed, BUT serialization of messaged to Actor IS
   *
-  * - TODO 4:  find out best-practices for PUBLISHER retries on ACK-TIMEOUT failures from SUBSCRIBE
+  * - TODO 4:  find out best-practices for SUBSCRIBER retries on ACK-TIMEOUT failures from PUBLISHER
   *
   *
   * - TODO 5:  find out how to integrate with Cassandra distributed UUID generator in a CLUSTER scenario for creating message
