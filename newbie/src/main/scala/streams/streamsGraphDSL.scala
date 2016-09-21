@@ -58,8 +58,9 @@ object streamsGraphDSL extends App {
       //        MERGE then GLUES the DUPLICATES!
 
       // TODO 3:  MODIFIED to calling buffered API within Graph mapping -- check assumptions!
-      //          - where INTERNAL Akka implementation calls onNext(), so you don't have to worry about it as a DEV?
-      //          - NUMERIC bound is based in NUMBER of element (possible complex types) on a
+      //          - where INTERNAL Akka implementation calls onNext() to get next BUFFERED batch,
+      //            so you don't have to worry about it as a DEV?
+      //          - NUMERIC bound of 10 refers to NUMBER of elements (of possibly complex types) on a
       //            UNIFORM-ELEMENT-TYPED stream, rather than Bytes, right?
       //          - if source produces N < BUFFER_MAX elements; then those are simply passed through the pipeline without
       //            waiting to accumulate BUFFER_MAX elements
