@@ -8,6 +8,10 @@ package actors
   * - https://www.toptal.com/scala/concurrency-and-fault-tolerance-made-easy-an-intro-to-akka
   * - https://gist.github.com/Diego81/9887105
   *
+  * CHEAT:
+  * - ! (“tell”) – sends the message and returns immediately
+  * - ? (“ask”) – sends the message and returns a Future representing a possible reply
+  *
   * ADAPTED to work with Akka v2.4.9
   * - http://doc.akka.io/docs/akka/snapshot/scala/actors.html
   *
@@ -37,23 +41,29 @@ package actors
   *  context.actorOf(DemoActor.props(42), "demo")
   *
   * TODOs:
-  * - CONFIGURABLE CREATION with ApplicationContext external startup config file using DEPENDENCY INJECTION INSTEAD of empty Props() file?
+  * - TODO 0:  CONFIGURABLE CREATION with ApplicationContext external startup config file using DEPENDENCY INJECTION INSTEAD of empty Props() file?
   * - LOCATION TRANSPARENCY for Actor Creation required Application.conf WITH HARDCODED NODES!
   * http://doc.akka.io/docs/akka/current/general/remoting.html
-  * - TODO:  SUPERVISOR STRATEGY USAGE, as well as SPOF if MASTER SUPERVISOR fails!
-  *   http://doc.akka.io/api/akka/2.3.0/#akka.actor.SupervisorStrategy
+  * - TODO 1:  SUPERVISOR-COORDINATED SHUTDOWN STRATEGY; but SPOF if MASTER SUPERVISOR fails!
+  *   HOW to shutdown simply and gracefully; via having Supervisor MESSAGE gracefully:
+  *   - http://doc.akka.io/api/akka/2.3.0/#akka.actor.SupervisorStrategy
   *   SHUTDOWN (top-down or bottom-up?) of hierarchy via delegating "ActorSystem.terminate",
   *   or "Manager.gracefulStop() with timeout" or via Supervisor's "DeathWatch" or via "Poison Pill"?
-  * - FAULT-TOLERANCE SPOF risk with Master-Parent Actor Lifecycle; then how is that managed to RECONSTITUTE state
+  * - TODO 2:  FAULT-TOLERANCE SPOF risk with Master-Parent Actor Lifecycle; then how is that managed to RECONSTITUTE state to
+  *   bring up replacement Actor (e.g. snapshot at time first Actor died,
+  *   including interim input message queue when first actor unavailable)
   * - What are best-practices for Hierarchy Lifetime Management
-  * - What is default message ordering --  async or serial-single-threaded?
+  * - TODO 3:  What is default message ordering --  serial-single-threaded, first-one-arriving-wins?
+  *             However, with multiple Senders on one Receiver; may not be ordered relative to each Sender's send order
   * - How does this integrate with persistence TO = FROM FLOWs!
-  * - find out best-practices for RECEIVER retries, RECEIVER duplicate-message-checking i.e. with Sequence IDs?
-  * - find out how to integrate with Cassandra distributed UUID generator in a CLUSTER scenario for auto-replication, dynamic scaling, e
-  * - find out fault-tolerance with Akka-Cluster as far as down-Actor detection and up-replicated-Actor serialization-from-disk!
-  * - find out data-modeling for coordination between services via foreign-key-UUID for associations!
-  * - find out TIMEOUT and RETRY logic!
-  *
+  * - TODO 4:  find out best-practices for RECEIVER retries on ACK-TIMEOUT failures,
+  *            RECEIVER duplicate-message-checking i.e. with Sequence IDs?
+  * - TODO 5:  find out how to integrate with Cassandra distributed UUID generator in a CLUSTER scenario for auto-replication, dynamic scaling, e
+  * - TODO 6:  find out fault-tolerance with Akka-Cluster as far as down-Actor detection and
+  *            up-replicated-Actor serialization-from-disk ALONG with INTERIM-EVENT capture!
+  * - TODO 7:  find out data-modeling for coordination between microservices via foreign-key-UUID for associations!
+  * - TODO 8:find out TIMEOUT and RETRY logic!
+   *
   */
 import akka.actor.{ Actor, ActorRef, Props, ActorSystem }
 
@@ -74,7 +84,7 @@ case class StartProcessFileMsg()
 
 class WordCounterActor(filename: String) extends Actor {
 
-  // TODO:  how to TEST this
+  // TODO 6:  how to TEST this
   // implicit val timeout = Timeout(5 seconds)
 
   private var running = false
@@ -120,7 +130,7 @@ object Sample extends App {
   import akka.dispatch.ExecutionContexts._
   implicit val ec = global
 
-  // API deprecated
+  // ATTN:  main API deprecated
   //override def main(args: Array[String]) {
   val system = ActorSystem("System")
   // val actor = system.actorOf(Props(new WordCounterActor(args(0))))
@@ -129,7 +139,7 @@ object Sample extends App {
   val future = actor ? StartProcessFileMsg()
   future.map { result =>
     println("Total number of words " + result)
-    // API deprecated
+    // ATTN:  terminate API deprecated
     // system.shutdown
     system.terminate()
     //}
